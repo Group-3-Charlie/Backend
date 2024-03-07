@@ -10,6 +10,7 @@ from flask import Flask, jsonify
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def home():
     return ("<h1>Welcome to Aictron!</h1>"
@@ -29,11 +30,13 @@ def about():
             "The app is designed to be user-friendly, with a simple and intuitive interface. "
             "The user will be able to upload a dataset, select the target column and then get the prediction.")
 
+
 @app.route('/upload', methods=['POST'])
 def upload_dataset():
     # Handle file upload and save the dataset
     # Perform data processing if necessary
     return jsonify({'message': 'Dataset uploaded successfully'})
+
 
 @app.route('/select-target', methods=['POST'])
 def select_target():
@@ -41,12 +44,14 @@ def select_target():
     # Store the target column information
     return jsonify({'message': 'Target column selected successfully'})
 
+
 @app.route('/predict', methods=['POST'])
 def predict():
     # Parse request to get data for prediction
     # Call predict function from your ML module
     # Format and return prediction results
     return jsonify({'prediction': 'Prediction results'})
+
 
 @app.route('/get_routes', methods=['GET'])
 def get_routes():
@@ -60,7 +65,11 @@ def get_routes():
                 "path": "/get_routes",
                 "args": "None",
                 "response": "HTML",
-                "status_code": "200"
+                "status_code": {
+                    "200": "Success",
+                    "400": "Bad Request",
+                    "500": "Internal Server Error"
+                }
             },
             {
                 "id": 2,
@@ -70,7 +79,12 @@ def get_routes():
                 "path": "/upload",
                 "args": "Dataset file -> CSV file",
                 "response": "JSON",
-                "status_code": "200 or 400"
+                "status_code": {
+                    "200": "Success",
+                    "400": "Bad Request",
+                    "405": "Method Not Allowed",
+                    "500": "Internal Server Error"
+                }
             },
             {
                 "id": 3,
@@ -80,7 +94,12 @@ def get_routes():
                 "path": "/select-target",
                 "args": "Column name -> String",
                 "response": "JSON",
-                "status_code": "200 or 400"
+                "status_code": {
+                    "200": "Success",
+                    "400": "Bad Request",
+                    "405": "Method Not Allowed",
+                    "500": "Internal Server Error"
+                }
             },
             {
                 "id": 4,
@@ -90,7 +109,12 @@ def get_routes():
                 "path": "/predict",
                 "args": "Data for prediction -> CSV file",
                 "response": "JSON",
-                "status_code": "200 or 400"
+                "status_code": {
+                    "200": "Success",
+                    "400": "Bad Request",
+                    "405": "Method Not Allowed",
+                    "500": "Internal Server Error"
+                }
             },
             {
                 "id": 5,
@@ -100,7 +124,11 @@ def get_routes():
                 "path": "/about",
                 "args": "None",
                 "response": "HTML",
-                "status_code": "200"
+                "status_code": {
+                    "200": "Success",
+                    "400": "Bad Request",
+                    "500": "Internal Server Error"
+                }
             }
         ]
     }
@@ -108,15 +136,19 @@ def get_routes():
     html_str = "<html><body><h1>Routes</h1><ul>"
     for route in res["routes"]:
         html_str += (f"<li><strong>{route['name']}</strong>: "
-                        f"{route['description']}<br>"
-                        f"&emsp; Method: {route['method']}<br>"
-                        f"&emsp; Path: <strong>{route['path']}</strong><br>"
-                        f"&emsp; Args: {route['args']}<br>"
-                        f"&emsp; Response: {route['response']}<br>"
-                        f"&emsp; Status Code: {route['status_code']}</li>")
+                     f"{route['description']}<br>"
+                     f"&emsp; Method: {route['method']}<br>"
+                     f"&emsp; Path: <strong>{route['path']}</strong><br>"
+                     f"&emsp; Args: {route['args']}<br>"
+                     f"&emsp; Response: {route['response']}<br>")
+        html_str += "&emsp; Status Code:<ul>"
+        for status_code, description in route['status_code'].items():
+            html_str += f"<li>{status_code}: {description}</li>"
+        html_str += "</ul></li>"
     html_str += "</ul></body></html>"
 
     return html_str
+
 
 if __name__ == '__main__':
     app.run(host="localhost", port=4567, debug=True)
