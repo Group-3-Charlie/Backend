@@ -10,10 +10,12 @@ class AILogic:
 
     @classmethod
     def load_data(cls, filepath):
-        cls.df = pd.read_csv(filepath)
+        cls.df = pd.read_csv(filepath, sep=';')
 
     @classmethod
     def select_target(cls, target):
+        for col in cls.df.columns:
+            print(col)
         if target not in cls.df.columns:
             raise ValueError('Target not found in dataset')
         cls.target = target
