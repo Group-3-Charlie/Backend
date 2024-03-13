@@ -17,7 +17,7 @@ class APILogic:
             return jsonify({'error': 'No file selected for uploading'}), 400
         if file:
             filename = secure_filename(file.filename)
-            filepath = os.path.join('uploads', filename)
+            filepath = os.path.join('../uploads', filename)
             file.save(filepath)
             AILogic.load_data(filepath)
             return jsonify({'message': 'File successfully uploaded'}), 200

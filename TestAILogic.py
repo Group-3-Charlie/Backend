@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from ai_logic import AILogic
+from code.ai_logic import AILogic
 
 
 class TestAILogic(unittest.TestCase):
