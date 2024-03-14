@@ -1,29 +1,41 @@
-import os
+from flask import jsonify, request
 
-from flask import jsonify
-from werkzeug.utils import secure_filename
-
-from ai_logic import AILogic
+from code.ai_logic import AILogic
 
 
 class APILogic:
+    """
+    API Logic class to define the logic for the API.
+    """
 
     @classmethod
-    def upload(cls, request):
-        if 'file' not in request.files:
+    def upload(cls, request: request) -> jsonify:
+        """
+        Uploads a file to the server.
+        :param request:
+        :return:
+        """
+        if request.method == 'POST':
             return jsonify({'error': 'No file part in the request'}), 400
+
         file = request.files['file']
+
         if file.filename == '':
             return jsonify({'error': 'No file selected for uploading'}), 400
-        if file:
-            filename = secure_filename(file.filename)
-            filepath = os.path.join('../uploads', filename)
-            file.save(filepath)
-            AILogic.load_data(filepath)
+
+        if file and file.filename.endswith('.csv'):
+            file.save(file.filename)
             return jsonify({'message': 'File successfully uploaded'}), 200
+        else:
+            return jsonify({'error': 'Only CSV files are allowed'}), 400
 
     @classmethod
     def select_target(cls, request):
+        """
+        Selects the target column from the dataset.
+        :param request:
+        :return:
+        """
         target = request.form.get('target')
         try:
             AILogic.select_target(target)
@@ -33,6 +45,11 @@ class APILogic:
 
     @classmethod
     def predict(cls, request):
+        """
+        Predicts the results based on the selected target and the new data.
+        :param request:
+        :return:
+        """
         try:
             predictions = AILogic.predict()
             return jsonify({'predictions': predictions}), 200

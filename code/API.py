@@ -1,20 +1,35 @@
+"""
+flask -> Flask, jsonify, request
+flasgger -> Swagger
+api_logic -> APILogic
+"""
 from flask import Flask, jsonify, request
 
 from api_logic import APILogic
 
+app = Flask(__name__)
+
 
 class API:
-    def __init__(self):
+    """
+    API class to define the routes and run the API.
+    """
+
+    def __init__(self) -> None:
+        """
+        Constructor to initialize the API.
+        """
         self.app = Flask(__name__)
         self.define_routes()
 
-    def define_routes(self):
+    def define_routes(self) -> None:
         """
         Defines the routes for the API.
         :return:
         """
+
         @self.app.route('/', methods=['GET'])
-        def index():
+        def index() -> jsonify:
             """
             Index route.
 
@@ -29,11 +44,12 @@ class API:
                     properties:
                         message:
                             type: string
+            :return:
             """
             return jsonify({'message': 'Welcome to the API!, use /get_routes to see available routes'})
 
         @self.app.route('/about', methods=['GET'])
-        def about():
+        def about() -> jsonify:
             """
             About route.
 
@@ -52,7 +68,7 @@ class API:
             return jsonify({'message': 'This is a simple API to demonstrate how to build an API with Flask'})
 
         @self.app.route('/get_routes', methods=['GET'])
-        def get_routes():
+        def get_routes() -> jsonify:
             """
             Get routes route.
 
@@ -82,11 +98,13 @@ class API:
                                         type: array
                                         items:
                                             type: string
+            :return:
+
             """
             return self._get_routes()
 
         @self.app.route('/get_data', methods=['GET'])
-        def get_data():
+        def get_data() -> jsonify:
             """
             Get data route.
 
@@ -116,8 +134,8 @@ class API:
             data = request.args.get('data')
             return self._get_data(data)
 
-        @self.app.route('/upload', methods=['POST'])
-        def upload():
+        @self.app.route('/upload_csv', methods=['POST'])
+        def upload() -> jsonify:
             """
             Upload route.
 
@@ -144,7 +162,7 @@ class API:
             return APILogic.upload(request)
 
         @self.app.route('/select_target', methods=['POST'])
-        def select_target():
+        def select_target() -> jsonify:
             """
             Select target route.
 
@@ -169,7 +187,7 @@ class API:
             return APILogic.select_target(request)
 
         @self.app.route('/predict', methods=['POST'])
-        def predict():
+        def predict() -> jsonify:
             """
             Predict route.
 
@@ -187,7 +205,7 @@ class API:
             """
             return APILogic.predict(request)
 
-    def _get_routes(self):
+    def _get_routes(self) -> jsonify:
         """
         Returns all the available routes in the API.
         :return:
@@ -203,7 +221,7 @@ class API:
             routes.append(route)
         return jsonify({'routes': routes})
 
-    def _get_data(self, data):
+    def _get_data(self, data) -> jsonify:
         """
         Returns the data passed in the request.
         :param data:
@@ -211,7 +229,7 @@ class API:
         """
         return jsonify({'data': data})
 
-    def run(self):
+    def run(self) -> None:
         """
         Runs the API.
         :return:
