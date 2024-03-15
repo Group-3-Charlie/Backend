@@ -1,7 +1,6 @@
 from flask import jsonify, request
 
-from code.ai_logic import AILogic
-
+from ai_logic import AILogic
 
 class APILogic:
     """
@@ -15,7 +14,10 @@ class APILogic:
         :param request:
         :return:
         """
-        if request.method == 'POST':
+        if request.method != 'POST':
+            return jsonify({'error': 'Only POST requests are allowed'}), 400
+
+        if 'file' not in request.files:
             return jsonify({'error': 'No file part in the request'}), 400
 
         file = request.files['file']
@@ -25,9 +27,12 @@ class APILogic:
 
         if file and file.filename.endswith('.csv'):
             file.save(file.filename)
-            return jsonify({'message': 'File successfully uploaded'}), 200
+            response = jsonify({'message': 'File successfully uploaded'})
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            return response, 200
         else:
             return jsonify({'error': 'Only CSV files are allowed'}), 400
+
 
     @classmethod
     def select_target(cls, request):
