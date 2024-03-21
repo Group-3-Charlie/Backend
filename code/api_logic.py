@@ -26,12 +26,12 @@ class APILogic:
 
         if file and file.filename.endswith('.csv'):
             file.save(file.filename)
+            AILogic.load_data(file.filename)
             response = jsonify({'message': 'File successfully uploaded'})
             response.headers.add('Access-Control-Allow-Origin', '*')
             return response, 200
         else:
             return jsonify({'error': 'Only CSV files are allowed'}), 400
-
 
     @classmethod
     def select_target(cls, request):

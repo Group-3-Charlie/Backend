@@ -27,6 +27,7 @@ class AILogic:
 
         # Normalization
         cls.normalisation(cls.df)
+        print(cls.df.head())
 
     @classmethod
     def select_target(cls, target):
