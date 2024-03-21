@@ -69,3 +69,12 @@ class APILogic:
         """
         predictions = "../dataset_examples/drinks.csv"
         return send_file(predictions, as_attachment=True, download_name='predictions.csv')
+
+    @classmethod
+    def send_columns(cls):
+        """
+        Sends the columns of the dataset.
+        :return:
+        """
+        columns = AILogic.df.columns
+        return jsonify({'columns': columns}), 200
