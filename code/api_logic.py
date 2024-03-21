@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify, request, send_file
 
 from ai_logic import AILogic
 
@@ -6,7 +6,6 @@ class APILogic:
     """
     API Logic class to define the logic for the API.
     """
-
     @classmethod
     def upload(cls, request: request) -> jsonify:
         """
@@ -60,3 +59,13 @@ class APILogic:
             return jsonify({'predictions': predictions}), 200
         except Exception as e:
             return jsonify({'error': str(e)}), 400
+
+    @classmethod
+    def send_predictions(cls):
+        """
+        Sends the predictions as a CSV file.
+        :param predictions:
+        :return:
+        """
+        predictions = "../dataset_examples/drinks.csv"
+        return send_file(predictions, as_attachment=True, download_name='predictions.csv')

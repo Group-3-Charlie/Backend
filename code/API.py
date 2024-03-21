@@ -206,6 +206,30 @@ class API:
             """
             return APILogic.predict(request)
 
+        @self.app.route('/send_predictions', methods=['GET'])
+        def send_predictions():
+            """
+            Send predictions route.
+
+            This endpoint sends the predictions to the client.
+
+            ---
+            parameters:
+                - name: csv_predictions
+                  in: query
+                  type: string
+                  required: true
+                  description: The predictions to send
+            responses:
+                200:
+                    description: CSV file sent successfully
+                400:
+                    description: An error occurred
+            :return:
+            """
+            return APILogic.send_predictions()
+
+
     def _get_routes(self) -> jsonify:
         """
         Returns all the available routes in the API.
@@ -235,4 +259,4 @@ class API:
         Runs the API.
         :return:
         """
-        self.app.run("localhost", 4567, debug=True)
+        self.app.run("localhost", 4567)
