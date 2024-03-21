@@ -11,6 +11,7 @@ from api_logic import APILogic
 app = Flask(__name__)
 CORS(app)
 
+
 class API:
     """
     API class to define the routes and run the API.
@@ -206,6 +207,46 @@ class API:
             """
             return APILogic.predict(request)
 
+        @self.app.route('/send_predictions', methods=['GET'])
+        def send_predictions():
+            """
+            Send predictions route.
+
+            This endpoint sends the predictions to the client.
+
+            ---
+            parameters:
+                - name: csv_predictions
+                  in: query
+                  type: string
+                  required: true
+                  description: The predictions to send
+            responses:
+                200:
+                    description: CSV file sent successfully
+                400:
+                    description: An error occurred
+            :return:
+            """
+            return APILogic.send_predictions()
+
+        @self.app.route('/send_columns', methods=['GET'])
+        def send_columns():
+            """
+            Send columns route.
+
+            This endpoint sends the columns of the dataset to the client.
+
+            ---
+            responses:
+                200:
+                    description: CSV file sent successfully
+                400:
+                    description: An error occurred
+            :return:
+            """
+            return APILogic.send_columns()
+
     def _get_routes(self) -> jsonify:
         """
         Returns all the available routes in the API.
@@ -235,4 +276,4 @@ class API:
         Runs the API.
         :return:
         """
-        self.app.run("localhost", 4567, debug=True)
+        self.app.run("localhost", 4567)
