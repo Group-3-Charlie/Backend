@@ -76,5 +76,6 @@ class APILogic:
         Sends the columns of the dataset.
         :return:
         """
-        columns = AILogic.df.columns
+        print(AILogic.df.columns)
+        columns = AILogic.df.columns.values.tolist()
         return jsonify({'columns': columns}), 200
