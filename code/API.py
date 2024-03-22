@@ -207,7 +207,7 @@ class API:
             """
             return APILogic.predict(request)
 
-        @self.app.route('/send_predictions', methods=['GET'])
+        @self.app.route('/get_predictions', methods=['GET'])
         def send_predictions():
             """
             Send predictions route.
@@ -230,7 +230,7 @@ class API:
             """
             return APILogic.send_predictions()
 
-        @self.app.route('/send_columns', methods=['GET'])
+        @self.app.route('/get_columns', methods=['GET'])
         def send_columns():
             """
             Send columns route.
