@@ -2,10 +2,12 @@ from flask import jsonify, request, send_file
 
 from ai_logic import AILogic
 
+
 class APILogic:
     """
     API Logic class to define the logic for the API.
     """
+
     @classmethod
     def upload(cls, request: request) -> jsonify:
         """
@@ -64,7 +66,6 @@ class APILogic:
     def send_predictions(cls):
         """
         Sends the predictions as a CSV file.
-        :param predictions:
         :return:
         """
         predictions = "../dataset_examples/drinks.csv"
