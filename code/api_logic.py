@@ -2,10 +2,12 @@ from flask import jsonify, request, send_file
 
 from ai_logic import AILogic
 
+
 class APILogic:
     """
     API Logic class to define the logic for the API.
     """
+
     @classmethod
     def upload(cls, request: request) -> jsonify:
         """
@@ -54,17 +56,28 @@ class APILogic:
         :param request:
         :return:
         """
-        try:
-            predictions = AILogic.predict()
-            return jsonify({'predictions': predictions}), 200
-        except Exception as e:
-            return jsonify({'error': str(e)}), 400
+        if request.method != 'POST':
+            return jsonify({'error': 'Only POST requests are allowed'}), 400
+        if AILogic.target is None:
+            return jsonify({'error': 'No target selected'}), 400
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file part in the request'}), 400
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'No file selected for uploading'}), 400
+        if file and file.filename.endswith('.csv'):
+            file.save(file.filename)
+            predict = AILogic.predict(file.filename)
+            response = jsonify({'predictions': predict})
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            return response, 200
+        else:
+            return jsonify({'error': 'Only CSV files are allowed'}), 400
 
     @classmethod
     def send_predictions(cls):
         """
         Sends the predictions as a CSV file.
-        :param predictions:
         :return:
         """
         predictions = "../dataset_examples/drinks.csv"
