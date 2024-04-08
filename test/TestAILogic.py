@@ -36,7 +36,7 @@ class TestAILogic(unittest.TestCase):
         :return:
         """
         self.ai_logic.select_target('total_litres_of_pure_alcohol')
-        predictions = self.ai_logic.predict()
+        predictions = self.ai_logic.train()
         print(predictions)
         self.assertIsInstance(predictions, list)
 

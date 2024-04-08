@@ -38,9 +38,10 @@ class AILogic:
         if target not in cls.df.columns:
             raise ValueError('Target not found in dataset')
         cls.target = target
+        cls.train()
 
     @classmethod
-    def predict(cls):
+    def train(cls):
         """
         Predicts the results based on the selected target and the new data.
         :return:
@@ -73,7 +74,9 @@ class AILogic:
         # Convert predictions to a list
         predictions_list = testpredict.tolist()
 
-        return predictions_list
+        # Return the model efficiency
+        print(cls.model.score(X_test_imputed, y_test))
+        return cls.model.score(X_test_imputed, y_test)
 
     @classmethod
     def normalisation(cls, dataToNormalise: pd.DataFrame):
@@ -89,3 +92,16 @@ class AILogic:
                 dataToNormalise[col] = res
             except ValueError:  # Handle non-numeric data
                 pass  # Skip columns that cannot be converted to float
+
+    @classmethod
+    def predict(cls, filename):
+        """
+        Predicts the results based on the selected target and the new data.
+        :param filename:
+        """
+        new_data = pd.read_csv(filename, sep=',')
+        cls.normalisation(new_data)
+        new_data_imputed = pd.DataFrame(cls.imputer.transform(new_data), columns=new_data.columns)
+        predictions = cls.model.predict(new_data_imputed)
+        print(predictions)
+        return predictions
