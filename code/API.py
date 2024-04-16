@@ -208,11 +208,11 @@ class API:
             return APILogic.predict(request)
 
         @self.app.route('/get_predictions', methods=['GET'])
-        def send_predictions():
+        def get_predictions():
             """
-            Send predictions route.
+            Return predictions.
 
-            This endpoint sends the predictions to the client.
+            This endpoint return the predictions to the client.
 
             ---
             parameters:
@@ -228,14 +228,14 @@ class API:
                     description: An error occurred
             :return:
             """
-            return APILogic.send_predictions()
+            return APILogic.get_predictions()
 
         @self.app.route('/get_columns', methods=['GET'])
-        def send_columns():
+        def get_columns():
             """
-            Send columns route.
+            Return column names.
 
-            This endpoint sends the columns of the dataset to the client.
+            This endpoint return thee column names of the dataset to the client.
 
             ---
             responses:
@@ -245,7 +245,7 @@ class API:
                     description: An error occurred
             :return:
             """
-            return APILogic.send_columns()
+            return APILogic.get_columns()
 
     def _get_routes(self) -> jsonify:
         """
