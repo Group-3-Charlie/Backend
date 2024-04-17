@@ -1,3 +1,5 @@
+import csv
+
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn import preprocessing
@@ -21,7 +23,8 @@ class AILogic:
         Loads the data from a CSV file.
         :param filepath:
         """
-        cls.df = pd.read_csv(filepath, sep=',')
+        separator: str = ',' if open(filepath).read().count(',') > open(filepath).read().count(';') else ';'
+        cls.df = pd.read_csv(filepath, sep=separator)
         # Select only numerical columns
         cls.df = cls.df.select_dtypes(include=['int', 'float'])
 
