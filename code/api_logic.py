@@ -75,20 +75,21 @@ class APILogic:
             return jsonify({'error': 'Only CSV files are allowed'}), 400
 
     @classmethod
-    def send_predictions(cls):
+    def get_predictions(cls):
         """
-        Sends the predictions as a CSV file.
+        Return the predictions as a CSV file.
         :return:
         """
         predictions = "../dataset_examples/drinks.csv"
         return send_file(predictions, as_attachment=True, download_name='predictions.csv')
 
     @classmethod
-    def send_columns(cls):
+    def get_columns(cls):
         """
-        Sends the columns of the dataset.
+        Return the columns of the dataset.
         :return:
         """
+        print(AILogic.df.columns)
         columns = AILogic.df.columns.values.tolist()
         response = jsonify({'columns': columns})
         response.headers.add('Access-Control-Allow-Origin', '*')
