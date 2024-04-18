@@ -42,12 +42,21 @@ class APILogic:
         :param request:
         :return:
         """
-        target = request.form.get('target')
+    
+        if request.method != 'POST':
+            return jsonify({'error': 'Only POST requests are allowed'}), 400
+        
+        target = request.get_data(as_text=True)
+        
         try:
             AILogic.select_target(target)
-            return jsonify({'message': 'Target successfully selected'}), 200
+            response = jsonify({'message': 'Target successfully selected'})
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            return response, 200
         except ValueError:
-            return jsonify({'error': 'Target not found in dataset'}), 400
+            response = jsonify({'error': 'Target not found in dataset'})
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            return response, 400
 
     @classmethod
     def predict(cls, request):
@@ -58,19 +67,25 @@ class APILogic:
         """
         if request.method != 'POST':
             return jsonify({'error': 'Only POST requests are allowed'}), 400
+        
         if AILogic.target is None:
             return jsonify({'error': 'No target selected'}), 400
+        
         if 'file' not in request.files:
             return jsonify({'error': 'No file part in the request'}), 400
+        
         file = request.files['file']
+
         if file.filename == '':
             return jsonify({'error': 'No file selected for uploading'}), 400
+        
         if file and file.filename.endswith('.csv'):
             file.save(file.filename)
             predict = AILogic.predict(file.filename)
             response = jsonify({'predictions': predict})
             response.headers.add('Access-Control-Allow-Origin', '*')
             return response, 200
+        
         else:
             return jsonify({'error': 'Only CSV files are allowed'}), 400
 

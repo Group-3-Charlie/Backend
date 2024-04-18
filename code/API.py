@@ -4,13 +4,8 @@ flasgger -> Swagger
 api_logic -> APILogic
 """
 from flask import Flask, jsonify, request
-from flask_cors import CORS
-
 from api_logic import APILogic
-
 app = Flask(__name__)
-CORS(app)
-
 
 class API:
     """
@@ -166,7 +161,7 @@ class API:
         @self.app.route('/select_target', methods=['POST'])
         def select_target() -> jsonify:
             """
-            Select target route.
+            Select target column.
 
             This endpoint selects the target column for the prediction.
 
