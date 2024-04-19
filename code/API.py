@@ -271,4 +271,6 @@ class API:
         Runs the API.
         :return:
         """
+        # self.app.run("0.0.0.0", 32044)
         self.app.run("localhost", 4567)
+        print('API running on port 4567')
