@@ -30,7 +30,7 @@ class TestAILogic(unittest.TestCase):
         self.ai_logic.select_target('total_litres_of_pure_alcohol')
         self.assertEqual(self.ai_logic.target, 'total_litres_of_pure_alcohol')
 
-    def test_predict(self):
+    def test_train(self):
         """
         Test the predict method.
         :return:
@@ -39,6 +39,7 @@ class TestAILogic(unittest.TestCase):
         predictions = self.ai_logic.train()
         print(predictions)
         self.assertIsInstance(predictions, list)
+
 
 
 if __name__ == '__main__':

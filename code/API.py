@@ -4,8 +4,9 @@ flasgger -> Swagger
 api_logic -> APILogic
 """
 from flask import Flask, jsonify, request
+
 from api_logic import APILogic
-app = Flask(__name__)
+
 
 class API:
     """
@@ -242,6 +243,23 @@ class API:
             """
             return APILogic.get_columns()
 
+        @self.app.route('/get_columns_without_target', methods=['GET'])
+        def get_columns_without_target():
+            """
+            Return column names without the target column.
+
+            This endpoint return the column names of the dataset without the target column to the client.
+
+            ---
+            responses:
+                200:
+                    description: CSV file sent successfully
+                400:
+                    description: An error occurred
+            :return:
+            """
+            return APILogic.get_columns_without_target()
+
     def _get_routes(self) -> jsonify:
         """
         Returns all the available routes in the API.
@@ -271,4 +289,6 @@ class API:
         Runs the API.
         :return:
         """
+        # self.app.run("0.0.0.0", 32044)
         self.app.run("localhost", 4567)
+        print('API running on port 4567')
