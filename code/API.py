@@ -4,8 +4,11 @@ flasgger -> Swagger
 api_logic -> APILogic
 """
 from flask import Flask, jsonify, request
+
 from api_logic import APILogic
+
 app = Flask(__name__)
+
 
 class API:
     """
