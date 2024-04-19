@@ -100,7 +100,8 @@ class AILogic:
         Predicts the results based on the selected target and the new data.
         :param filename:
         """
-        new_data = pd.read_csv(filename, sep=',')
+        separator = ',' if open(filename).read().count(',') > open(filename).read().count(';') else ';'
+        new_data = pd.read_csv(filename, sep=separator)
         cls.normalisation(new_data)
         new_data_imputed = pd.DataFrame(cls.imputer.transform(new_data), columns=new_data.columns)
         predictions = cls.model.predict(new_data_imputed)
