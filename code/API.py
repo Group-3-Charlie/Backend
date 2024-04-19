@@ -245,6 +245,23 @@ class API:
             """
             return APILogic.get_columns()
 
+        @self.app.route('/get_columns_without_target', methods=['GET'])
+        def get_columns_without_target():
+            """
+            Return column names without the target column.
+
+            This endpoint return the column names of the dataset without the target column to the client.
+
+            ---
+            responses:
+                200:
+                    description: CSV file sent successfully
+                400:
+                    description: An error occurred
+            :return:
+            """
+            return APILogic.get_columns_without_target()
+
     def _get_routes(self) -> jsonify:
         """
         Returns all the available routes in the API.
