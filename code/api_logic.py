@@ -82,11 +82,7 @@ class APILogic:
         if file and file.filename.endswith('.csv'):
             file.save(file.filename)
             predict = AILogic.predict(file.filename)
-            # Build a new csv with the predictions
-            csv_predictions = 'predictions.csv'
-            predict.to_csv(csv_predictions, index=False)
-            response = send_file(csv_predictions, as_attachment=True, download_name='predictions.csv')
-            response.headers.add('Access-Control-Allow-Origin', '*')
+            response = jsonify({'predictions': "Message test"})
             return response, 200
 
         else:
@@ -98,7 +94,7 @@ class APILogic:
         Return the predictions as a CSV file.
         :return:
         """
-        predictions = "../dataset_examples/drinks.csv"
+        predictions = "predictions.csv"
         return send_file(predictions, as_attachment=True, download_name='predictions.csv')
 
     @classmethod
