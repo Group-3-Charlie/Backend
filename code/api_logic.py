@@ -81,8 +81,9 @@ class APILogic:
 
         if file and file.filename.endswith('.csv'):
             file.save(file.filename)
-            predict = AILogic.predict(file.filename)
+            AILogic.predict(file.filename)
             response = jsonify({'predictions': "Message test"})
+            response.headers.add('Access-Control-Allow-Origin', '*')
             return response, 200
 
         else:

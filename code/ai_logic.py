@@ -110,4 +110,9 @@ class AILogic:
         new_data_imputed = pd.DataFrame(cls.imputer.transform(new_data), columns=new_data.columns)
         predictions = cls.model.predict(new_data_imputed)
         predictions = pd.DataFrame(predictions, columns=[cls.target])
+
+        # Rebuid the original dataset with the predictions
+        new_data = pd.read_csv(filename, sep=separator)
+        new_data[cls.target] = predictions
+        new_data.to_csv('predictions.csv', index=False)
         return predictions
