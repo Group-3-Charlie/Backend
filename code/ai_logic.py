@@ -104,7 +104,6 @@ class AILogic:
         separator = ',' if open(filename).read().count(',') > open(filename).read().count(';') else ';'
         new_data = pd.read_csv(filename, sep=separator)
         new_data.select_dtypes(include=['int', 'float'])
-        # Select only numerical columns
         new_data = new_data.select_dtypes(include=['int', 'float'])
         new_data = cls.normalisation(new_data)
         new_data.drop(cls.target, axis=1, inplace=True)
