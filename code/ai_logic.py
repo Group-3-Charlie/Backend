@@ -93,6 +93,7 @@ class AILogic:
                 dataToNormalise[col] = res
             except ValueError:  # Handle non-numeric data
                 pass  # Skip columns that cannot be converted to float
+        return dataToNormalise
 
     @classmethod
     def predict(cls, filename):
@@ -102,8 +103,12 @@ class AILogic:
         """
         separator = ',' if open(filename).read().count(',') > open(filename).read().count(';') else ';'
         new_data = pd.read_csv(filename, sep=separator)
-        cls.normalisation(new_data)
+        new_data.select_dtypes(include=['int', 'float'])
+        # Select only numerical columns
+        new_data = new_data.select_dtypes(include=['int', 'float'])
+        new_data = cls.normalisation(new_data)
+        new_data.drop(cls.target, axis=1, inplace=True)
         new_data_imputed = pd.DataFrame(cls.imputer.transform(new_data), columns=new_data.columns)
         predictions = cls.model.predict(new_data_imputed)
-        print(predictions)
+        predictions = pd.DataFrame(predictions, columns=[cls.target])
         return predictions
