@@ -10,6 +10,7 @@ class AILogic:
     """
     AI Logic class to define the logic for the AI.
     """
+    predictions = None
     df = None
     target = None
     model = LinearRegression()
@@ -115,4 +116,5 @@ class AILogic:
         new_data = pd.read_csv(filename, sep=separator)
         new_data[cls.target] = predictions
         new_data.to_csv('predictions.csv', index=False)
+        cls.predictions = new_data
         return predictions

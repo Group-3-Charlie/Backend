@@ -103,8 +103,9 @@ class APILogic:
         :return:
         """
         predictions = "predictions.csv"
-        return send_file(predictions, as_attachment=True, download_name='predictions.csv').headers.add(
-            'Access-Control-Allow-Origin', '*'), 200
+        response = send_file(predictions, as_attachment=True)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response, 200
 
     @classmethod
     def get_columns(cls):
