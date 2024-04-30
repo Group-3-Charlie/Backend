@@ -231,7 +231,7 @@ class API:
             """
             Return column names.
 
-            This endpoint return thee column names of the dataset to the client.
+            This endpoint return the column names of the dataset to the client.
 
             ---
             responses:

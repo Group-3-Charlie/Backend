@@ -16,15 +16,18 @@ class APILogic:
         :return:
         """
         if request.method != 'POST':
-            return jsonify({'error': 'Only POST requests are allowed'}), 400
+            return jsonify({'error': 'Only POST requests are allowed'}).headers.add('Access-Control-Allow-Origin',
+                                                                                    '*'), 400
 
         if 'file' not in request.files:
-            return jsonify({'error': 'No file part in the request'}), 400
+            return jsonify({'error': 'No file part in the request'}).headers.add('Access-Control-Allow-Origin',
+                                                                                 '*'), 400
 
         file = request.files['file']
 
         if file.filename == '':
-            return jsonify({'error': 'No file selected for uploading'}), 400
+            return jsonify({'error': 'No file selected for uploading'}).headers.add('Access-Control-Allow-Origin',
+                                                                                    '*'), 400
 
         if file and file.filename.endswith('.csv'):
             file.save(file.filename)
@@ -33,7 +36,7 @@ class APILogic:
             response.headers.add('Access-Control-Allow-Origin', '*')
             return response, 200
         else:
-            return jsonify({'error': 'Only CSV files are allowed'}), 400
+            return jsonify({'error': 'Only CSV files are allowed'}).headers.add('Access-Control-Allow-Origin', '*'), 400
 
     @classmethod
     def select_target(cls, request):
@@ -44,7 +47,8 @@ class APILogic:
         """
 
         if request.method != 'POST':
-            return jsonify({'error': 'Only POST requests are allowed'}), 400
+            return jsonify({'error': 'Only POST requests are allowed'}).headers.add('Access-Control-Allow-Origin',
+                                                                                    '*'), 400
 
         target = request.get_data(as_text=True)
 
@@ -66,18 +70,21 @@ class APILogic:
         :return:
         """
         if request.method != 'POST':
-            return jsonify({'error': 'Only POST requests are allowed'}), 400
+            return jsonify({'error': 'Only POST requests are allowed'}).headers.add('Access-Control-Allow-Origin',
+                                                                                    '*'), 400
 
         if AILogic.target is None:
-            return jsonify({'error': 'No target selected'}), 400
+            return jsonify({'error': 'No target selected'}).headers.add('Access-Control-Allow-Origin', '*'), 400
 
         if 'file' not in request.files:
-            return jsonify({'error': 'No file part in the request'}), 400
+            return jsonify({'error': 'No file part in the request'}).headers.add('Access-Control-Allow-Origin',
+                                                                                 '*'), 400
 
         file = request.files['file']
 
         if file.filename == '':
-            return jsonify({'error': 'No file selected for uploading'}), 400
+            return jsonify({'error': 'No file selected for uploading'}).headers.add('Access-Control-Allow-Origin',
+                                                                                    '*'), 400
 
         if file and file.filename.endswith('.csv'):
             file.save(file.filename)
@@ -87,7 +94,7 @@ class APILogic:
             return response, 200
 
         else:
-            return jsonify({'error': 'Only CSV files are allowed'}), 400
+            return jsonify({'error': 'Only CSV files are allowed'}).headers.add('Access-Control-Allow-Origin', '*'), 400
 
     @classmethod
     def get_predictions(cls):
@@ -96,7 +103,8 @@ class APILogic:
         :return:
         """
         predictions = "predictions.csv"
-        return send_file(predictions, as_attachment=True, download_name='predictions.csv')
+        return send_file(predictions, as_attachment=True, download_name='predictions.csv').headers.add(
+            'Access-Control-Allow-Origin', '*'), 200
 
     @classmethod
     def get_columns(cls):
