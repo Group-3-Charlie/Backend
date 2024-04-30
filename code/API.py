@@ -203,7 +203,6 @@ class API:
             """
             return APILogic.predict(request)
 
-
         @self.app.route('/get_predictions', methods=['GET'])
         def get_predictions():
             """
